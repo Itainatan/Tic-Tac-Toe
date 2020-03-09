@@ -1,45 +1,40 @@
 import React from 'react';
 import Board from './Board'
+var _ = require('lodash');
 
 export default class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             xIsNext: true,
-            stepNumber: 0,
-            history: [
-                { squares: Array(9).fill(null) }
-            ]
+            history: []
         }
     }
 
+    // funtion to reset the board
     resetBoard = () => {
         this.setState({
-            stepNumber: 0,
+            history: [],
             xIsNext: true
         })
     }
 
+    // function to handle every click of button
     handleClick = (i) => {
-        const history = this.state.history.slice(0, this.state.stepNumber + 1);
-        const current = history[history.length - 1];
-        const squares = current.squares.slice();
-        const winner = this.calculateWinner(squares);
-        if (winner || squares[i]) {
+        const { history } = _.cloneDeep(this.state);
+        if (this.calculateWinner(history) || history[i])
             return;
-        }
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        history[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
-            history: history.concat({
-                squares: squares
-            }),
-            xIsNext: !this.state.xIsNext,
-            stepNumber: history.length
+            history,
+            xIsNext: !this.state.xIsNext
         });
 
     }
 
-    calculateWinner = (squares) => {
+    // function to check if user won
+    calculateWinner = () => {
+        const { history } = this.state
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
@@ -52,28 +47,51 @@ export default class Game extends React.Component {
         ];
         for (let line of lines) {
             const [a, b, c] = line;
-            if (squares[a] && squares[a] === squares[b] && squares[b] === squares[c])
-                return squares[a];
+            if (history[a] && history[a] === history[b] && history[b] === history[c]) {
+                return history[a];
+            }
         }
         return null;
     }
 
+    //function to check if board ended with draw
+    checkDraw = () => {
+        const { history } = this.state
+        if (history.length === 9 && this.allWithValues())
+            return true;
+        else
+            return false
+    }
+
+    allWithValues = () => {
+        const { history } = this.state
+        for (let i in history) {
+            if (!history[i]) return false
+        }
+        return true;
+    }
+
+    // function to display the status
+    setStatus = () => {
+        const winner = this.calculateWinner();
+        const status = winner ? ('Winner is ' + winner) :
+            this.checkDraw() ? 'Draw'
+                : ('Next Player is ' + (this.state.xIsNext ? 'X' : 'O'));
+
+        return status
+    }
+
     render() {
-        const history = this.state.history;
-        const current = history[this.state.stepNumber];
-        const winner = this.calculateWinner(current.squares);
-        const status = winner ? ('Winner is ' + winner) : ('Next Player is ' + (this.state.xIsNext ? 'X' : 'O'));
-        console.log(history);
-        
-        console.log(current);
-        console.log(current.squares);
-        
+        const { history } = _.cloneDeep(this.state);
+        const status = this.setStatus();
+
         return (
             <div className="game">
+                <h1>Tic - Toc Game</h1>
                 <div className="game-board">
                     <Board
                         onClick={(i) => this.handleClick(i)}
-                        squares={current.squares}
+                        squares={history}
                         status={status}
                         reset={() => this.resetBoard()} />
                 </div>
