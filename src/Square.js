@@ -1,8 +1,10 @@
 import React from 'react';
 
 const areEqual = (prevProps, nextProps) => {
-    return (prevProps.value === nextProps.value) || (prevProps.disable !== nextProps.disable)
-
+    if ((prevProps.value !== nextProps.value) || (prevProps.disable !== nextProps.disable))
+        return false;
+    else
+        return true;
 }
 
 function Square(props) {
