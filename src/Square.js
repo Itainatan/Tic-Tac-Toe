@@ -1,13 +1,11 @@
 import React from 'react';
 
 const areEqual = (prevProps, nextProps) => {
-    if ((prevProps.value !== nextProps.value) || (prevProps.disable !== nextProps.disable))
-        return false;
-    else
-        return true;
+    const toRender = (prevProps.disable !== nextProps.disable) || (prevProps.value !== nextProps.value)
+    return !toRender;
 }
 
-function Square(props) {
+const Square = props => {
     return (
         <button className="square" disabled={props.disable || props.value} onClick={props.onClick}>
             {props.value}

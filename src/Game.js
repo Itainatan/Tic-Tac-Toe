@@ -69,7 +69,7 @@ export default class Game extends React.Component {
 
     // function to display the status
     setStatus = (winner) => {
-        const status = winner ? ('Winner is ' + winner + ' !') :
+        const status = winner ? ('Winner is - ' + winner + ' !') :
             this.checkDraw() ? 'Draw !'
                 : ('Next Player is - ' + (this.state.xIsNext ? 'X' : 'O'));
 
