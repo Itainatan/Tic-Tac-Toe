@@ -1,19 +1,19 @@
 import React from 'react';
 
-export default class Square extends React.Component {
+const areEqual = (prevProps, nextProps) => {
+    return (prevProps.value === nextProps.value) || (prevProps.disable !== nextProps.disable)
 
-    shouldComponentUpdate(nextProps) {
-        if (this.props.value !== nextProps.value || this.props.disable !== nextProps.disable)
-            return true;
-        else
-            return false;
-    }
+}
 
-    render() {
-        return (
-            <button className="square" disabled={this.props.disable || this.props.value} onClick={this.props.onClick}>
-                {this.props.value}
-            </button>
-        );
-    }
-};
+function Square(props) {
+    return (
+        <button className="square" disabled={props.disable || props.value} onClick={props.onClick}>
+            {props.value}
+        </button>
+    );
+}
+
+const SquareWithMemo = React.memo(Square, areEqual);
+
+export default SquareWithMemo;
+
