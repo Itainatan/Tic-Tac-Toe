@@ -1,7 +1,7 @@
 import React from 'react';
 
 const areEqual = (prevProps, nextProps) => {
-    const toRender = (prevProps.disable !== nextProps.disable) || (prevProps.value !== nextProps.value)
+    const toRender = (prevProps.disable !== nextProps.disable) || (prevProps.value !== nextProps.value);
     return !toRender;
 }
 
