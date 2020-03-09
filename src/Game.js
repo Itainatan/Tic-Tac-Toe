@@ -29,7 +29,7 @@ export default class Game extends React.Component {
     }
 
     // function to check if user won
-    calculateWinner = () => {
+    checkWinner = () => {
         const { history } = this.state
         const lines = [
             [0, 1, 2],
@@ -78,7 +78,7 @@ export default class Game extends React.Component {
 
     render() {
         const history = [...this.state.history]
-        const winner = this.calculateWinner();
+        const winner = this.checkWinner();
         const status = this.setStatus(winner);
         const disable = winner ? true : false
 
