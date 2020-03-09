@@ -1,13 +1,12 @@
 import React from 'react';
 import Board from './Board'
-var _ = require('lodash');
 
 export default class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             xIsNext: true,
-            history: []
+            history: [],
         }
     }
 
@@ -21,15 +20,12 @@ export default class Game extends React.Component {
 
     // function to handle every click of button
     handleClick = (i) => {
-        const { history } = _.cloneDeep(this.state);
-        if (this.calculateWinner(history) || history[i])
-            return;
+        const history = [...this.state.history]
         history[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
             history,
             xIsNext: !this.state.xIsNext
         });
-
     }
 
     // function to check if user won
@@ -72,18 +68,19 @@ export default class Game extends React.Component {
     }
 
     // function to display the status
-    setStatus = () => {
-        const winner = this.calculateWinner();
-        const status = winner ? ('Winner is ' + winner) :
-            this.checkDraw() ? 'Draw'
-                : ('Next Player is ' + (this.state.xIsNext ? 'X' : 'O'));
+    setStatus = (winner) => {
+        const status = winner ? ('Winner is ' + winner + ' !') :
+            this.checkDraw() ? 'Draw !'
+                : ('Next Player is - ' + (this.state.xIsNext ? 'X' : 'O'));
 
         return status
     }
 
     render() {
-        const { history } = _.cloneDeep(this.state);
-        const status = this.setStatus();
+        const history = [...this.state.history]
+        const winner = this.calculateWinner();
+        const status = this.setStatus(winner);
+        const disable = winner ? true : false
 
         return (
             <div className="game">
@@ -93,7 +90,8 @@ export default class Game extends React.Component {
                         onClick={(i) => this.handleClick(i)}
                         squares={history}
                         status={status}
-                        reset={() => this.resetBoard()} />
+                        reset={() => this.resetBoard()}
+                        disable={disable} />
                 </div>
             </div>
         );
