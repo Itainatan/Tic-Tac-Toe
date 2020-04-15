@@ -1,4 +1,4 @@
-## Tic-Tac-Toe Site 😷
+## Tic-Tac-Toe Site 🎲
 
 👉🏽 [Demo](https://tic-tac-toe-itai-web.netlify.com/)
 
